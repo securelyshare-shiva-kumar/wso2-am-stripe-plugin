@@ -57,6 +57,9 @@ import org.wso2.carbon.registry.core.Resource;
 import org.wso2.carbon.registry.core.exceptions.RegistryException;
 
 import java.nio.charset.Charset;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -389,6 +392,7 @@ public class StripeSubscriptionCreationWorkflowExecutor extends WorkflowExecutor
             Map<String, Object> subParams = new HashMap<String, Object>();
             subParams.put(StripeMonetizationConstants.CUSTOMER, sharedCustomer.getSharedCustomerId());
             subParams.put(StripeMonetizationConstants.ITEMS, items);
+            subParams.put("trial_end", Instant.from(LocalDate.now().plusDays(10)).toEpochMilli());
             try {
                 //create a subscritpion in stripe under the API Providers Connected Account
                 subscription = Subscription.create(subParams, requestOptions);
